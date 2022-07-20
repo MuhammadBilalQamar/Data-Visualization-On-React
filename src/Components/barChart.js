@@ -37,10 +37,10 @@ class BarChart extends React.Component {
 
   async componentDidMount() {
     const { fileData } = this.props;
-    console.log("fileData---", fileData)
+    // console.log("fileData---", fileData)
     try {
       if (fileData) {
-        const result = await this.groupByArtist(DATA);
+        const result = await this.groupByArtist(fileData);
         const formatedData = await this.formatData(result);
         const top10RecordsByTime = await getTopNValues(formatedData, 10);
         const labels = convertArrayOfObjectToArray(top10RecordsByTime, 'artistName');
@@ -184,13 +184,12 @@ class BarChart extends React.Component {
 
   render() {
     const { dataBar } = this.state;
-    const { fileData } = this.props;
     return (
       <MDBContainer>
         {dataBar &&
           <>
             <h3 className="mt-5">My top 10 favourite artist (based on hours)</h3>
-            <Bar data={this.state.dataBar} options={this.state.barChartOptions} legend={false}/>
+            <Bar data={this.state.dataBar} options={this.state.barChartOptions} legend={false} />
           </>
         }
       </MDBContainer>

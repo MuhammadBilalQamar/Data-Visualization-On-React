@@ -124,7 +124,7 @@ class SingleLineChart extends React.Component {
                 })
             }
         } catch (error) {
-            console.log('error=====', error)
+            console.log('single line chart error=====', error)
         }
     }
 

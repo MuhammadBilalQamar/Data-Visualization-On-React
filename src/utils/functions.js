@@ -99,4 +99,8 @@ const convertMsArrayToHrArray = (arr, key) => {
     }
 }
 
-export { convertMonthsNumberToName, convertMsToHM, getTopNValues, convertArrayOfObjectToArray, convertMsArrayToHrArray };
+const percentage = (obtain, total) => {
+    return ((obtain / total) * 100).toFixed(2)
+}
+
+export { convertMonthsNumberToName, convertMsToHM, getTopNValues, convertArrayOfObjectToArray, convertMsArrayToHrArray, percentage };

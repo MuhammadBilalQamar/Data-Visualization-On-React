@@ -1,72 +1,118 @@
-// import React from "react";
-// import { Pie } from "react-chartjs-2";
-// import { MDBContainer } from "mdbreact";
-// import pieData from './piechartData';
-
-// var Labels = [];
-// var dataPoints = [];
-// pieData.forEach(element => {
-//     Labels.push(element.ITEMGROUPNAMEE)
-//     dataPoints.push(element.ITEMNETPRICE)
-// });
+import React from "react";
+import { Pie } from "react-chartjs-2";
+import { MDBContainer } from "mdbreact";
+import DATA from "../data/StreamingHistory0.json"
+import moment from "moment";
+import { percentage, convertArrayOfObjectToArray } from "../utils/functions";
 
 
-// class PieChart extends React.Component {
+class PieChart extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataPie: null
+        }
+    }
 
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             dataPie: {
-//                 labels: Labels,
-//                 datasets: [
-//                     {
-//                         data: dataPoints,
-//                         backgroundColor: [
-//                             "#F7464A",
-//                             "#46BFBD",
-//                             "#FDB45C",
-//                             "#949FB1",
-//                             "#4D5360",
-//                             "#AC64AD",
-//                             "#BD3C20",
-//                             "#86CB1B",
-//                             "#A3AB09",
-//                             "#2B20CC",
-//                             "#E10FC4",
-//                             "#DC79B2",
-//                             "#E20728",
-//                             "#FF5733",
-//                             "#23E2EE",
-//                             "#EDFC00",
+    async componentDidMount() {
+        const { fileData } = this.props;
+        try {
+            if (fileData) {
+                const total = this.calculateTotal(fileData)
+                const result = await this.groupByDays(fileData);
+                const formatedData = await this.formatData(result, total);
+                const labels = convertArrayOfObjectToArray(formatedData, 'day');
+                const dataPoints = convertArrayOfObjectToArray(formatedData, 'percentage');
+                this.setState({
+                    dataPie: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: dataPoints,
+                                backgroundColor: [
+                                    "#F7464A",
+                                    "#46BFBD",
+                                    "#FDB45C",
+                                    "#949FB1",
+                                    "#4D5360",
+                                    "#AC64AD",
+                                    "#BD3C20",
 
-//                         ],
-//                         hoverBackgroundColor: [
-//                             "#FF5A5E",
-//                             "#5AD3D1",
-//                             "#FFC870",
-//                             "#A8B3C5",
-//                             "#616774",
-//                             "#DA92DB"
-//                         ]
-//                     }
-//                 ]
-//             }
-//         }
-//     }
-//     async componentDidMount() {
+                                ],
+                                hoverBackgroundColor: [
+                                    "#FF5A5E",
+                                    "#5AD3D1",
+                                    "#FFC870",
+                                    "#A8B3C5",
+                                    "#616774",
+                                    "#DA92DB"
+                                ]
+                            }
+                        ]
+                    }
+                })
 
-//     }
+            }
+        } catch (error) {
+            console.log("pie chart error=======", error);
+        }
+    }
 
+    formatData = (objects, total) => {
+        let tempData = []
+        for (const key in objects) {
+            if (Object.hasOwnProperty.call(objects, key)) {
+                const element = objects[key];
+                if (element && element.length != 0) {
+                    const obtain = this.calculateTotal(element)
+                    const calculatedPercentage = percentage(obtain, total);
+                    // tempData.push({ totalHours: Number(convertMsToHM(total)), artistName })
+                    tempData.push({ day: key, percentage: Number(calculatedPercentage) })
+                }
+            }
+        }
+        return tempData;
+    }
 
-//     render() {
-//         return (
-//             <MDBContainer>
-//                 <h3 className="mt-5">Pie chart</h3>
-//                 <Pie data={this.state.dataPie} options={{ responsive: true }} />
-//             </MDBContainer>
-//         );
-//     }
-// }
+    groupByDays = (data) => {
+        const groups = data.reduce((groups, item) => {
+            // const data = item.endTime.split('-')[1];
+            const data = moment(item.endTime).format('dddd');
+            if (!groups[data]) {
+                groups[data] = [];
+            }
+            groups[data].push(item);
+            return groups;
+        }, {});
+        return groups;
+    }
 
-// export default PieChart;
+    calculateTotal = (arr) => {
+        if (arr) {
+            const sum = arr.reduce((accumulator, object) => {
+                return accumulator + object.msPlayed;
+            }, 0);
+            return sum;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    render() {
+        const { dataPie } = this.state;
+        return (
+            <MDBContainer>
+                {dataPie &&
+                    <>
+                        <h3 className="mt-5">Day wise % of spotify streaming</h3>
+                        <Pie data={this.state.dataPie} options={{ responsive: true }} />
+                    </>
+                }
+            </MDBContainer>
+        );
+    }
+}
+
+export default PieChart;

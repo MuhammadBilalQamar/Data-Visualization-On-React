@@ -5,6 +5,7 @@ import FooterPage from './footer'
 import SingleLineChart from './singleLineChart';
 import BarChart from './barChart';
 import MultiLineChart from './multiLineChart';
+import PieChart from './pieChart';
 import MyDropzone from './fileUploader';
 
 class Layout extends React.Component {
@@ -70,9 +71,15 @@ class Layout extends React.Component {
               <MyDropzone getFileData={(data) => this.setState({ fileData: data })} />
               {/* <MyDropzone getFileData={(data) => console.log('hey=====',data)} /> */}
 
-              <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
+              {fileData &&
+                <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
+                  {<PieChart fileData={fileData} />}
+                </div>
+              }
+
+              {/* <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
                 {<BarChart fileData={fileData} />}
-              </div>
+              </div> */}
 
               {/* BAR CHART RENDERING */}
               {fileData &&
