@@ -6,6 +6,7 @@ import BarChart from './barChart';
 import HorizontalBarChart from './horizontalBarChart';
 import PieChart from './pieChart';
 import MyDropzone from './fileUploader';
+import BarLineChart from './barLineChart';
 
 class Layout extends React.Component {
   constructor(props) {
@@ -62,6 +63,13 @@ class Layout extends React.Component {
             <MDBContainer className="text-center my-5">
               <MyDropzone getFileData={(data) => this.setState({ fileData: data })} fileData={this.state.fileData} />
 
+              {/* BAR CHART RENDERING */}
+              {fileData &&
+                <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
+                  {<BarChart fileData={fileData} />}
+                </div>
+              }
+
               {/* HORIZONTAL BAR CHART RENDERING */}
               {fileData &&
                 <div style={{ boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
@@ -69,10 +77,11 @@ class Layout extends React.Component {
                 </div>
               }
 
-              {/* BAR CHART RENDERING */}
+              {/* BAR LINE CHART RENDERING */}
+              
               {fileData &&
-                <div style={{ backgroundColor: "white", boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
-                  {<BarChart fileData={fileData} />}
+                <div style={{ boxShadow: "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)" }}>
+                  {<BarLineChart fileData={fileData} />}
                 </div>
               }
 

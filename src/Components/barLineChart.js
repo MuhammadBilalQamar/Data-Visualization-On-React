@@ -1,10 +1,11 @@
 import React from "react";
-import { HorizontalBar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { MDBContainer } from "mdbreact";
 import DATA from "../data/StreamingHistory0.json"
-import { convertArrayOfObjectToArray, convertMonthsNumberToName } from "../utils/functions";
+import { convertMsArrayToHrArray, getTopNValues, convertArrayOfObjectToArray } from "../utils/functions";
+import moment from "moment";
 
-class HorizontalBarChart extends React.Component {
+class BarLineChart extends React.Component {
   state = {
     dataBar: null,
     barChartOptions: {
@@ -51,11 +52,13 @@ class HorizontalBarChart extends React.Component {
   getData = (array) => {
     try {
       const groups = array.reduce((groups, item) => {
-        const date = item.endTime.split('-')[1];
-        if (!groups[date]) {
-          groups[date] = [];
+        const date = item.endTime.split(' ')[1];
+        const nDate = date.split(':')[0]
+
+        if (!groups[nDate]) {
+          groups[nDate] = [];
         }
-        groups[date].push(item);
+        groups[nDate].push(item);
         return groups;
       }, {});
       if (groups) {
@@ -63,21 +66,21 @@ class HorizontalBarChart extends React.Component {
         for (const key in groups) {
           if (Object.hasOwnProperty.call(groups, key)) {
             data.push({
-              label: key,
+              hours: key,
               dataPoint: groups[key].length
             })
           }
         }
-        const sortedData = data.sort((a, b) => a.label > b.label ? 1 : -1);
-        const labels = convertArrayOfObjectToArray(sortedData, 'label');
+        const sortedData = data.sort((a, b) => a.hours > b.hours ? 1 : -1);
+        const labels = convertArrayOfObjectToArray(sortedData, 'hours');
         const dataPoints = convertArrayOfObjectToArray(sortedData, 'dataPoint');
 
         this.setState({
           dataBar: {
-            labels: convertMonthsNumberToName(labels),
+            labels: labels,
             datasets: [
               {
-                label: "Songs played count",
+                label: "Song played count",
                 data: dataPoints,
                 backgroundColor: [
                   "rgba(255, 134,159,0.4)",
@@ -92,6 +95,14 @@ class HorizontalBarChart extends React.Component {
                   "rgba(255, 218, 128,0.4)",
                   "rgba(170, 128, 252,0.4)",
                   "rgba(98,  182, 239,0.4)",
+                  "rgba(255, 134,159,0.4)",
+                  "rgba(255, 177, 101,0.4)",
+                  "rgba(255, 134,159,0.4)",
+                  "rgba(255, 177, 101,0.4)",
+                  "#669999",
+                  "#FF3300",
+                  "purple",
+                  "rgba(255, 218, 128, 1)",
                 ],
                 borderWidth: 2,
                 borderColor: [
@@ -107,6 +118,14 @@ class HorizontalBarChart extends React.Component {
                   "rgba(255, 218, 128, 1)",
                   "rgba(170, 128, 252, 1)",
                   "rgba(98,  182, 239, 1)",
+                  "rgba(255, 134, 159, 1)",
+                  "rgba(255, 218, 128, 1)",
+                  "rgba(113, 205, 205, 1)",
+                  "rgba(170, 128, 252, 1)",
+                  "rgba(255, 218, 128, 1)",
+                  "rgba(98,  182, 239, 1)",
+                  "rgba(255, 134,159,0.4)",
+                  "rgba(255, 177, 101,0.4)",
                 ]
               }
             ]
@@ -118,21 +137,20 @@ class HorizontalBarChart extends React.Component {
     }
   }
 
-
   render() {
     const { dataBar } = this.state;
     return (
       <MDBContainer>
         {dataBar &&
           <>
-            <h3 className="mt-5">Day wise % of spotify streaming</h3>
-            <HorizontalBar
+            <h3 className="mt-5">Average Distribution of Streaming Over Day Hours</h3>
+            <Bar
               data={this.state.dataBar}
               options={this.state.barChartOptions}
               legend={false}
               height={300}
             />
-            <b>(Songs played in counts)</b>
+            <b>(Hours (in 24 hour format))</b>
           </>
         }
       </MDBContainer>
@@ -140,4 +158,4 @@ class HorizontalBarChart extends React.Component {
   }
 }
 
-export default HorizontalBarChart;
+export default BarLineChart;

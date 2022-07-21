@@ -107,7 +107,7 @@ class PieChart extends React.Component {
                 {dataPie &&
                     <>
                         <h3 className="mt-5">Day wise % of spotify streaming</h3>
-                        <Pie data={this.state.dataPie} options={{ responsive: true }} />
+                        <Pie data={this.state.dataPie} options={{ responsive: true }} height={100} />
                     </>
                 }
             </MDBContainer>

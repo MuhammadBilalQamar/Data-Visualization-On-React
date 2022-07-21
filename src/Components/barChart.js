@@ -50,7 +50,7 @@ class BarChart extends React.Component {
             labels: labels,
             datasets: [
               {
-                label: "My top 10 favourite artist (based on hours)",
+                label: "Number of hours",
                 data: dataPoints,
                 backgroundColor: [
                   "rgba(255, 134,159,0.4)",
@@ -195,7 +195,7 @@ class BarChart extends React.Component {
               legend={false}
               height={300}
             />
-            <b>(artist names)</b>
+            <b>(Artist names)</b>
           </>
         }
       </MDBContainer>
