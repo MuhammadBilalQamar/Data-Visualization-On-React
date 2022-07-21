@@ -189,7 +189,13 @@ class BarChart extends React.Component {
         {dataBar &&
           <>
             <h3 className="mt-5">My top 10 favourite artist (based on hours)</h3>
-            <Bar data={this.state.dataBar} options={this.state.barChartOptions} legend={false} />
+            <Bar
+              data={this.state.dataBar}
+              options={this.state.barChartOptions}
+              legend={false}
+              height={300}
+            />
+            <b>(artist names)</b>
           </>
         }
       </MDBContainer>
