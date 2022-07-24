@@ -3,10 +3,10 @@
 - Drag and drop json files
 - Read data
 - Analysis based on 3 charts (Vertical bar chart, Horizontal bar chart, Pie chart)
-  (a) My top 10 favourite artist (based on hours)
-  (b) Day wise % of spotify streaming
-  (c) Average Distribution of Streaming Over Day Hours
-  (d) Day wise % of spotify streaming
+ #### (a) My top 10 favourite artist (based on hours) ####
+ #### (b) Day wise % of spotify streaming ####
+ #### (c) Average Distribution of Streaming Over Day Hours ####
+ #### (d) Day wise % of spotify streaming ####
 
 ## Setup Instructions
 Make Sure [NodeJs](https://nodejs.org/en/download/) installed into your system
