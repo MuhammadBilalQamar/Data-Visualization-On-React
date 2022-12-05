@@ -26,6 +26,9 @@ You will also see any lint errors in the console.
 ## DEMO LINK
 [https://datavisualization.com/](https://genuine-tiramisu-ae6069.netlify.app/)
 
+## FIVER CUSTOM PURCHASE
+https://www.fiverr.com/devbilal/create-data-visualization-website-in-react-python
+
 ### `TEST JSON FILES`
 These files are available in Documents/Person folders
 
